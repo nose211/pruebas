@@ -1,0 +1,14 @@
+public class EvenOrOdd {
+    public static String even_or_odd(int number) {
+        int numero2=2;
+        String salida="";
+        if(number%numero2 == 0){
+          salida="Even";
+        }else{
+          salida="Odd";
+        
+        }
+        return salida;
+        
+    }
+}
