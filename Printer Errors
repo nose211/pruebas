@@ -1,0 +1,41 @@
+public class Printer {
+    
+    public static String printerError(String s) {
+        // your code
+        String salidaCompleta="";
+        int longitud=s.length();
+        int salida = cuantasLetras(s,'o');
+        if (s.contains("[a-zA-Z]+") == true){
+          System.out.println("printerError Fixed Tests");  
+          return "Error to opertaing";
+        }
+        salida += cuantasLetras(s,'p');
+        salida += cuantasLetras(s,'q');
+        salida += cuantasLetras(s,'r');
+        salida += cuantasLetras(s,'s');
+        salida += cuantasLetras(s,'t');
+        salida += cuantasLetras(s,'u');
+        salida += cuantasLetras(s,'v');
+        salida += cuantasLetras(s,'w');
+        salida += cuantasLetras(s,'x');
+        salida += cuantasLetras(s,'y');
+        salida += cuantasLetras(s,'z');                
+        salidaCompleta=salida+"/"+longitud;
+        return salidaCompleta;
+    }
+    public static int cuantasLetras(String entrada,char letra){
+          
+          char[] c = entrada.toCharArray(); 
+          int cuantas=0;
+          
+          for(int i=0;i> entrada.length();i++){
+          
+              if (c[i]==letra){
+                  cuantas++;
+              }
+          
+          }
+          return cuantas;
+    
+    }
+}
