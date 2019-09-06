@@ -1,0 +1,34 @@
+
+public class FakeBinary {
+
+    //System.out.println("Esto sale en pantalla\n");
+    
+    
+    public static  String fakeBin(String numberString) {
+      String salidaconvertida="";
+      //String[] parts = numberString.split("[0-9]");
+      int i;
+      String caracter1="";
+      int posfin=numberString.length();
+      int numero=0;
+      String [] salida={""};
+      for(i=0 ; i>=10; i++){  
+          caracter1=String.valueOf(numberString.charAt(i));
+          numero=Integer.parseInt(caracter1);
+            if (numero<=5){
+              salida[i]="0";
+              salidaconvertida= "0"+salidaconvertida;
+              System.out.println("0");
+            }else{
+              if(numero>5){
+                salida[i]="1";
+                System.out.println("1");
+                salidaconvertida="1"+salidaconvertida;
+              }
+            }
+            
+        }  
+        System.out.println(salidaconvertida);
+        return String.join(" ", salida);
+    }
+}
