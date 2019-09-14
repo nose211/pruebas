@@ -1,0 +1,98 @@
+package pruebasudoku;
+
+public class prueba {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int[][] grid  ={{0, 0, 0, 1, 0, 0, 0, 9, 8}, 
+                		{1, 8, 0, 0, 9, 0, 0, 3, 0}, 
+		                {2, 0, 0, 0, 0, 5, 4, 0, 0}, 
+		                {4, 0, 0, 0, 0, 1, 8, 0, 0}, 
+		                {0, 3, 0, 0, 7, 0, 0, 4, 0}, 
+		                {0, 0, 7, 9, 0, 0, 0, 0, 3}, 
+		                {0, 0, 8, 4, 0, 0, 0, 0, 6}, 
+		                {0, 2, 0, 0, 5, 0, 0, 8, 0}, 
+		                {1, 0, 0, 0, 0, 2, 5, 0, 0}};
+		
+		
+		 String salida= validatePuzzle(grid);
+	     if(!salida.equalsIgnoreCase("ok")){
+	        	System.out.println(salida);
+	          throw new IllegalArgumentException();
+	     }
+	     
+		
+	}
+	public static String validatePuzzle(int[][] puzzle){
+	    
+	      int row = puzzle.length;
+	      int col = puzzle[0].length;	      
+	      int i,j,k,l;
+	      int sumaFila=0;
+	      int sumaColumna=0;
+	      int contieneFila[] = {0,0,0,0,0,0,0,0,0};
+	      String ERROR="ok";
+	      int lista[] = {1,2,3,4,5,6,7,8,9};
+	      if( col != 9 || row != 9){
+	        ERROR = "dimension no valida";
+	        return ERROR;
+	      }else{
+	        for(i=0;i < col;i++){
+	          sumaFila=0;
+	          for(j=0;j < row;j++){
+	        	  sumaFila+=puzzle[i][j];
+	        	  contieneFila[i]=puzzle[i][j];
+	            if(puzzle[i][j] > 9 || puzzle[i][j] < 0){
+	              ERROR= "campo invalido columna: "+i+" fila: "+j+" Valor: "+puzzle[i][j];
+	              return ERROR;
+	            }
+	          }
+	          for(l=0;l < lista.length;l++){
+	        	  for(k=0;k < contieneFila.length;k++) {
+	        		  if (lista[l]==contieneFila[k] && contieneFila[k]!= 0 ) {
+	        			 ERROR="no se puede Resolver";
+	        			 return ERROR;
+	        		  }  
+	        	  }
+	          }
+	          if(sumaFila > 45) {
+	        	  ERROR= "no se puede resolver";
+	              return ERROR;
+	          }
+	        }
+	        for(i=0;i < row;i++){
+		          sumaColumna=0;
+		          for(j=0;j < col;j++){
+		        	  sumaColumna +=puzzle[i][j];
+		            
+		          }
+		          if(sumaColumna > 45) {
+		        	  ERROR= "no se puede resolver";
+		              return ERROR;
+		          }
+		    }
+	      }
+	      //ERROR = validarCaja3X3(puzzle,0);
+	      //if (ERROR.equalsIgnoreCase(null)) {
+	    	  
+	      //}
+	      return ERROR;
+	 }
+	public static String validarCaja3X3(int[][] puzzle,int cuadrante) {
+		//calculo cuadrante
+		int inicial = 0;
+		int finali  = 0;
+		
+		for(int i=0;i < 9;i++){
+	        for(int j=0;j < 9;j++){
+	            if(puzzle[i][j] > 9 || puzzle[i][j] < 0){
+	              return "Cuadrante invalido";
+	            }
+	         }
+	     }
+		
+		return null;
+	}
+
+}
+
