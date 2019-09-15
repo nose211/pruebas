@@ -1,98 +1,205 @@
-package pruebasudoku;
+public class SudokuSolver {
 
-public class prueba {
+	int a [][];
+	public SudokuSolver(int[][] grid) {
+		// Your code here!
+		Sudoku s = new Sudoku();
+		s.assign(grid);
+		if(!s.solveSudoku()||!s.validarGrilla()){
+			throw new IllegalArgumentException();
+		}else {
+			a=s.traerSudoku();
+		}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		int[][] grid  ={{0, 0, 0, 1, 0, 0, 0, 9, 8}, 
-                		{1, 8, 0, 0, 9, 0, 0, 3, 0}, 
-		                {2, 0, 0, 0, 0, 5, 4, 0, 0}, 
-		                {4, 0, 0, 0, 0, 1, 8, 0, 0}, 
-		                {0, 3, 0, 0, 7, 0, 0, 4, 0}, 
-		                {0, 0, 7, 9, 0, 0, 0, 0, 3}, 
-		                {0, 0, 8, 4, 0, 0, 0, 0, 6}, 
-		                {0, 2, 0, 0, 5, 0, 0, 8, 0}, 
-		                {1, 0, 0, 0, 0, 2, 5, 0, 0}};
-		
-		
-		 String salida= validatePuzzle(grid);
-	     if(!salida.equalsIgnoreCase("ok")){
-	        	System.out.println(salida);
-	          throw new IllegalArgumentException();
-	     }
-	     
-		
-	}
-	public static String validatePuzzle(int[][] puzzle){
-	    
-	      int row = puzzle.length;
-	      int col = puzzle[0].length;	      
-	      int i,j,k,l;
-	      int sumaFila=0;
-	      int sumaColumna=0;
-	      int contieneFila[] = {0,0,0,0,0,0,0,0,0};
-	      String ERROR="ok";
-	      int lista[] = {1,2,3,4,5,6,7,8,9};
-	      if( col != 9 || row != 9){
-	        ERROR = "dimension no valida";
-	        return ERROR;
-	      }else{
-	        for(i=0;i < col;i++){
-	          sumaFila=0;
-	          for(j=0;j < row;j++){
-	        	  sumaFila+=puzzle[i][j];
-	        	  contieneFila[i]=puzzle[i][j];
-	            if(puzzle[i][j] > 9 || puzzle[i][j] < 0){
-	              ERROR= "campo invalido columna: "+i+" fila: "+j+" Valor: "+puzzle[i][j];
-	              return ERROR;
-	            }
-	          }
-	          for(l=0;l < lista.length;l++){
-	        	  for(k=0;k < contieneFila.length;k++) {
-	        		  if (lista[l]==contieneFila[k] && contieneFila[k]!= 0 ) {
-	        			 ERROR="no se puede Resolver";
-	        			 return ERROR;
-	        		  }  
-	        	  }
-	          }
-	          if(sumaFila > 45) {
-	        	  ERROR= "no se puede resolver";
-	              return ERROR;
-	          }
-	        }
-	        for(i=0;i < row;i++){
-		          sumaColumna=0;
-		          for(j=0;j < col;j++){
-		        	  sumaColumna +=puzzle[i][j];
-		            
-		          }
-		          if(sumaColumna > 45) {
-		        	  ERROR= "no se puede resolver";
-		              return ERROR;
-		          }
-		    }
-	      }
-	      //ERROR = validarCaja3X3(puzzle,0);
-	      //if (ERROR.equalsIgnoreCase(null)) {
-	    	  
-	      //}
-	      return ERROR;
-	 }
-	public static String validarCaja3X3(int[][] puzzle,int cuadrante) {
-		//calculo cuadrante
-		int inicial = 0;
-		int finali  = 0;
-		
-		for(int i=0;i < 9;i++){
-	        for(int j=0;j < 9;j++){
-	            if(puzzle[i][j] > 9 || puzzle[i][j] < 0){
-	              return "Cuadrante invalido";
-	            }
-	         }
-	     }
-		
-		return null;
 	}
 
+	public int[][] solve() {
+		// Your code here too!
+
+		return a;
+	}
+}
+class Sudoku{
+	private int[][] sudoku;   
+	public  Sudoku()
+	{
+		sudoku = new int[9][9];
+	}
+
+	public  Sudoku(int sudoku[][])
+	{
+		this.sudoku= sudoku;
+	}
+	private boolean containsInRow(int row,int number)
+	{
+		for(int i=0;i<9;i++)
+		{
+			if(sudoku[row][i]==number)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	private boolean containsInCol(int col,int number)
+	{
+		for(int i=0;i<9;i++)
+		{
+			if(sudoku[i][col]==number)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	private boolean containsInBox(int row, int col,int number)
+	{
+		int r = row - row%3;
+		int c = col - col%3;
+		for(int i = r ; i< r+3 ; i++)
+		{
+			for(int j = c; j < c+3 ; j++)
+			{
+				if(sudoku[i][j]==number)
+				{
+					return true;
+				}
+			}
+
+		}
+		return false;
+	}
+	private boolean isAllowed(int row, int col,int number)
+	{
+		return !(containsInRow(row, number) || containsInCol(col, number) || containsInBox(row, col, number));
+	}
+	public boolean solveSudoku()
+	{
+    if(!validarGrilla()){
+        throw new IllegalArgumentException();
+        //return false;
+    }
+		for(int row=0;row<sudoku.length;row++)
+		{
+			for(int col=0;col<sudoku.length;col++)
+			{
+				if(sudoku[row][col]==0)
+				{
+					for(int number=1;number<=sudoku.length;number++)
+					{
+						if(isAllowed(row, col, number))
+						{
+							sudoku[row][col] = number;
+							if(solveSudoku())
+							{
+								return true;
+							}
+							else
+							{
+								sudoku[row][col] = 0;
+							}
+						}
+					}
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	public void assign(int grilla[][]) {
+
+		sudoku=grilla;
+	} 
+	public int[][] traerSudoku(){
+		return sudoku;
+	}
+	public boolean validarGrilla() throws IllegalArgumentException{
+		int cuadrante[][]={{0,2},{0,2}};
+		int i,j;
+		int colIni=0,colFin=2,rowIni=0,rowFin=2,coor=0;
+    //System.out.println("gridddd: "+sudoku.length);
+		if(!(sudoku.length == 9) || !(sudoku[0].length == 9)) {
+			throw new IllegalArgumentException("ilegalllll");
+		}
+		for(i=0;i < sudoku.length;i++){
+			for( j=0;j < sudoku[0].length;j++){
+				if(sudoku[i][j] > 9 || sudoku[i][j] < 0){
+					throw new IllegalArgumentException();
+				}
+			}
+		}
+		for(i=0;i <3; i ++) {
+			for(j=0;j<3;j++){
+	    		  System.out.println("fila fin   : "+colFin);
+	    		  System.out.println("col  inicio: "+rowIni);
+	    		  System.out.println("col  fin   : "+rowFin);
+	    		  System.out.println("col  coor  : "+coor);
+				if(!validarCuadrante("tipo",cuadrante,coor)) {
+					return false;
+				}
+				colIni=colFin+1;
+				colFin=colIni+2;
+				if(colIni>6) {
+					colIni=0;
+					colFin=2;
+				}
+				coor++;
+				cuadrante[0][0]=colIni;
+				cuadrante[0][1]=colFin;
+			}
+			rowIni=rowFin+1;
+			rowFin=rowIni+2;
+			cuadrante[1][0]=rowIni;
+			cuadrante[1][1]=rowFin;
+			cuadrante[0][0]=0;
+			cuadrante[0][1]=2;
+		}
+
+		return true;
+	}
+	private  boolean validarCuadrante(String tipo,int[][] cuadrante,int coor) {
+		//validacion fila
+		int i,j,count=0;		
+		int iniCol=cuadrante[0][0];
+		int finCol=cuadrante[0][1];
+		int iniFil=cuadrante[1][0];
+		int finFil=cuadrante[1][1];
+		int contieneCuadrante[]= {0,0,0,0,0,0,0,0,0};
+
+		for(i=iniCol;i <= finCol;i++){
+			for(j=iniFil;j <= finFil;j++) {
+				if(sudoku[j][i]!= 0) {
+					contieneCuadrante[count]=sudoku[j][i];
+					count++;
+				}
+			}      	  
+		}
+
+		if (!validarColRow(contieneCuadrante,"cuadrante",coor)) {
+			return false;
+		}
+		return true;
+	}
+	private  boolean validarColRow(int[] contieneFila,String tipo,int valorCol) {
+		//validacion fila
+		int l,k,count=0;
+		for(l=0;l < contieneFila.length;l++){
+			for(k=0;k < contieneFila.length;k++) {
+				if(contieneFila[k]!= 0) {
+					if (contieneFila[l]==contieneFila[k]) {
+						count++;
+					} 
+				}
+			}
+			if(count > 1) {
+
+				return false;
+			}
+			count=0;
+		}
+		return true;
+	}
 }
 
